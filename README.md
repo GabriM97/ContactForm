@@ -63,6 +63,22 @@ oppure, se vuoi avviare in container in background:
 ./vendor/bin/sail up -d
 ```
 
+---
+
+**NOTE:** If you need to run the sail command using `sudo` add the following two variables to your `.env` file otherwise you might get permissions issues:
+```env
+WWWUSER=1000
+WWWGROUP=1000
+```
+This is needed because sail will run as `root` user (which is always `uid=0; gid=0`) and will set `WWWUSER=0` and `WWWGROUP=0` when building the image.
+"1000" should be the value of your user UID and GID. You can double check if this is correct by running:
+- `id -u $(whoami)` - the UID (user) value
+- `id -g $(whoami)` - the GID (group) value
+
+Replace the values in the `.env` file if needed.
+
+---
+
 # Modifica il progetto e inviacelo
 
 A questo punto troverai maggiori informazioni su cosa puoi fare con il progetto direttamente nella index:
