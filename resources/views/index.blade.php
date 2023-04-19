@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Netsons Test</title>
 
-    @vite(['resource/js/app.js', 'resources/css/app.css'])
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
-<body>
+<body class="p-3">
     <h1 class="text-3xl font-bold my-5">Test del candidato</h1>
     <p class="mb-3">Benvenuto/a nel test per la tua candidatura. </p>
     <p class="mb-3">Cosa puoi fare con questo progetto: </p>
-    <ol class="list-disc">
+    <ol class="ml-10 mb-3 list-disc">
         <li>aggiungere una funzionalità "form di contatto"a questa pagina. Le richieste inviate devono essere
             salvate in una model di nome Contact. Utilizza le migration per creare la tabella necessaria,
         </li>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        Test vue.js
+        App vue.js
     </div>
 </template>
 
