@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
+use App\Http\Responses\CustomErrorJsonResponse;
+use App\Http\Responses\CustomJsonResponse;
 use App\Models\Contact;
-use Illuminate\Http\Response;
+use Exception;
 
 class ContactController extends Controller
 {
@@ -15,7 +17,7 @@ class ContactController extends Controller
      */
     public function list()
     {
-        return response()->json(Contact::all());
+        return (new CustomJsonResponse(Contact::all()))->get();
     }
 
     /**
@@ -28,18 +30,23 @@ class ContactController extends Controller
     {
         $validated = $request->validated();
         
-        // create and persist the new contact form
-        $contact = Contact::create([
-            'name' => $validated['name'],
-            'surname' => $validated['surname'],
-            'email' => $validated['email'],
-            'message' => $validated['message'],
-        ]);
+        try {
 
-        return 
-            response()->json([
-                'id' => $contact->id
-            ], Response::HTTP_OK);
+            // create and persist the new contact form
+            $contact = Contact::create([
+                'name' => $validated['name'],
+                'surname' => $validated['surname'],
+                'email' => $validated['email'],
+                'message' => $validated['message'],
+                'user_id' => $validated['user_id']
+            ]);
+
+        } catch (Exception $e) {
+            
+            return (new CustomErrorJsonResponse($e->getMessage()))->get();
+        }
+        
+        return (new CustomJsonResponse($contact))->get();
     }
 
     /**
@@ -50,6 +57,10 @@ class ContactController extends Controller
      */
     public function delete(Contact $contact)
     {
-        //
+        $deletedId = $contact->id;
+        
+        $contact->delete();
+
+        return (new CustomJsonResponse(['id' => $deletedId]))->get();
     }
 }

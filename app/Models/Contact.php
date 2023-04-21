@@ -20,6 +20,7 @@ class Contact extends Model
         'surname',
         'email',
         'message',
+        'user_id',
     ];
 
     /**
@@ -28,7 +29,7 @@ class Contact extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'user_id',
+        //
     ];
 
     public function user()
