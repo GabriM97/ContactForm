@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreContactRequest extends FormRequest
+class UserRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,8 +17,7 @@ class StoreContactRequest extends FormRequest
      */
     public function authorize()
     {
-        // any logic to prevent the user to perform this request should go here.
-
+        // give everyone the possibility to register
         return true;
     }
 
@@ -31,10 +30,8 @@ class StoreContactRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'surname' => 'required|max:255',
-            'email' => 'email',
-            'message' => 'required|max:255',
-            'user_id' => 'integer'// 'exists:users,id',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:8,max:255',
         ];
     }
     
@@ -55,26 +52,5 @@ class StoreContactRequest extends FormRequest
             ]),
             Response::HTTP_BAD_REQUEST
         );
-    }
-    
-    /**
-     * Populate the email field with the authenticated user email in case is not passed
-     *
-     * @param  mixed $validator
-     * @return void
-     */
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            // fill email
-            if (!$this->filled('email')) {
-                $this->merge(['email' => Auth::user()->email]);
-            }
-
-            // fill user_id
-            if (!$this->filled('user_id')) {
-                $this->merge(['user_id' => Auth::user()->id]);
-            }
-        });
     }
 }
