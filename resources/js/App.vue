@@ -1,52 +1,100 @@
-<template>
-    <div class="mt-10">
+<script setup>
+    import ContactForm from './components/ContactForm.vue';
+    import ContactsList from './components/ContactsList.vue';
+    import LoginForm from './components/LoginForm.vue';
+    import RegisterForm from './components/RegisterForm.vue';
+    import TopBar from './components/TopBar.vue';
+    import axios from 'axios';
+    import { ref, reactive, onMounted } from 'vue';
 
-        <div id="contact_form_container" class="flex flex-col p-5">
+    const App = {
+        user: reactive({
+            loggedIn: false,
+            details: {},
+            
+            populate: async function () {
+                axios.get('/api/user/details', {})
+                .then(res => {
+                    App.user.details = res.data.data;
+                }).catch(err => {
+                    App.errorMessage.value = err.message;
+                })
+            },
 
-            <h1 class="text-3xl">Contact us</h1>
+            reset: function () {
+                App.user.loggedIn = false;
+                App.user.details = {};
+            }
+        }),
 
-            <form action="#" method="post" id="contact_form">
-                <div class="flex flex-col md:flex-row" id="name_surname_container">
+        errorMessage: ref(''),
 
-                    <!-- Name -->
-                    <div class="flex flex-col my-3" id="name_container">
-                        <label for="contact_form_name" class="font-medium">Name</label>
-                        <input type="text" name="name" id="contact_form_name" class="border-gray-300 border-2 rounded-xl">
-                    </div>
+        accessToken: reactive({
+            token: '',
+            expiryDate: new Date,
 
-                    <!-- Surname -->
-                    <div class="flex flex-col my-3" id="surname_container">
-                        <label for="contact_form_surname" class="font-medium">Surname</label>
-                        <input type="text" name="surname" id="contact_form_surname" class="border-gray-300 border-2 rounded-xl">
-                    </div>
+            reset: function () {
+                App.accessToken.create('', new Date);
+                delete axios.defaults.headers.common['Authorization'];
+            },
 
-                </div>
+            create: function (newToken, newExpiryDate) {
+                App.accessToken.token = newToken;
+                App.accessToken.expiryDate = newExpiryDate;
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + App.accessToken.token
+            },
+        }),
+        
+    };
 
-                <!-- Email -->
-                <div class="flex flex-col my-3" id="email_container">
-                    <label for="contact_form_email" class="font-medium">Email</label>
-                    <input type="text" name="email" id="contact_form_email" class="border-gray-300 border-2 rounded-xl">
-                </div>
+    const showRegisterForm = ref(false);
 
-                <!-- Message -->
-                <div class="flex flex-col my-3" id="message_container">
-                    <label for="contact_form_message" class="font-medium">Message</label>
-                    <textarea name="message" id="contact_form_message" class="border-gray-300 border-2 rounded-xl h-20" maxlength="1000"><!-- add realtime current lenght--></textarea>
-                </div>
+    const handleLogin = function (tokenData) {
+        App.accessToken.create(tokenData.token, tokenData.expiryDate);
+        App.user.loggedIn = true;
+        App.user.populate();
+    }
 
-                <!-- Message -->
-                <div class="flex flex-row my-6 justify-center items-center" id="submit_container">
-                    <input type="submit" name="send" id="contact_form_submit" value="Send" class="border-gray-300 border-2 rounded-md px-5 py-2 mr-2 w-2/3">
-                    <input type="reset" name="cancel" id="contact_form_cancel" value="Cancel" class="border-gray-300 border-2 rounded-md px-5 py-2 ml-2 w-1/3">
-                </div>
-            </form>
-        </div>
-    </div>
-</template>
+    const handleLogout = function (logout) {
+        App.user.loggedIn = false;
+        App.accessToken.reset();
+        App.user.reset();
+    }
 
-<script>
-export default {};
+    onMounted(() => {
+        console.log('checking if access token expired');
+
+        if (App.accessToken.expiryDate <= (new Date)) {
+            App.accessToken.reset();
+        }
+
+        // App.errorMessage.value = '';
+        // showRegisterForm.value = false;
+    });
 </script>
 
-<style>
-</style>
+<template>
+    <TopBar 
+        @loggedOutEvent="(logout) => handleLogout(logout)"
+        @errorEvent="(error) => App.errorMessage.value = error"
+
+        :userName="App.user.details.name" 
+        :errorMessage="App.errorMessage"
+    />
+
+    <LoginForm v-if="!App.user.loggedIn && !showRegisterForm"
+        @loggedInEvent="(tokenData) => handleLogin(tokenData)"
+        @showRegisterFormEvent="(show) => showRegisterForm = show"
+        @errorEvent="(error) => App.errorMessage.value = error"
+    />
+<!-- 
+    <RegisterForm v-if="!App.user.loggedIn && showRegisterForm" 
+        @loggedInEvent="login => App.user.loggedIn = login"
+        @showLoginFormEvent="(hide) => showRegisterForm = hide"
+    />
+
+    <ContactsList v-if="App.user.loggedIn.value" />
+
+    <ContactForm v-if="App.user.loggedIn.value" @formSentEvent="contactFormSent" />
+-->
+</template>
