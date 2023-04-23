@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreContactRequest;
-use App\Http\Responses\CustomErrorJsonResponse;
-use App\Http\Responses\CustomJsonResponse;
-use App\Models\Contact;
 use Exception;
+use App\Models\Contact;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreContactRequest;
+use App\Http\Responses\CustomJsonResponse;
+use App\Http\Responses\CustomErrorJsonResponse;
 
 class ContactController extends Controller
 {
@@ -17,7 +18,7 @@ class ContactController extends Controller
      */
     public function list()
     {
-        return (new CustomJsonResponse(Contact::all()))->get();
+        return (new CustomJsonResponse(Auth::user()->contacts()))->get();
     }
 
     /**
@@ -38,7 +39,7 @@ class ContactController extends Controller
                 'surname' => $validated['surname'],
                 'email' => $validated['email'],
                 'message' => $validated['message'],
-                'user_id' => $validated['user_id']
+                'user_id' => Auth::user()->id
             ]);
 
         } catch (Exception $e) {

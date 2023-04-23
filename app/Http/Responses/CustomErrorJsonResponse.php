@@ -4,6 +4,7 @@ namespace App\Http\Responses;
 
 use Exception;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class CustomErrorJsonResponse extends CustomJsonResponse
 {
@@ -24,6 +25,8 @@ class CustomErrorJsonResponse extends CustomJsonResponse
             'error_message' => $this->getError(),
             'error_code' => $this->getErrorCode()
         ]);
+
+        Log::error(json_encode([$error, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10)]));
     }
 
     /**

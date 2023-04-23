@@ -13,6 +13,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public const AUTH_ABILITIES = ['*'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,6 +47,6 @@ class User extends Authenticatable
 
     public function contacts()
     {
-        return $this->hasMany(Contact::class);
+        return $this->hasMany(Contact::class)->get();
     }
 }
