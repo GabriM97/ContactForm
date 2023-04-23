@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Responses\CustomJsonResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,6 @@ Route::prefix('user')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('user.register');
     Route::post('/login', [AuthController::class, 'login'])->name('user.login');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
-    Route::get('/details', fn(Request $request) => $request->user())->middleware('auth:api');
+    Route::get('/details', fn(Request $request) => (new CustomJsonResponse($request->user()))->get())->middleware('auth:api');
 
 });
