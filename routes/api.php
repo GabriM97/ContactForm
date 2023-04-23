@@ -16,17 +16,16 @@ use App\Http\Controllers\ContactController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::middleware('auth:sanctum')->prefix('contacts')->group(function () {
+Route::middleware('auth:api')->prefix('contacts')->group(function () {
     Route::get('/', [ContactController::class, 'list'])->name('contacts.list');
     Route::post('/', [ContactController::class, 'store'])->name('contacts.store');
     Route::delete('/{contact}', [ContactController::class, 'delete'])->name('contacts.delete');
 });
 
-Route::prefix('users')->group(function () {
+Route::prefix('user')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('user.register');
     Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
+    Route::get('/details', fn(Request $request) => $request->user())->middleware('auth:api');
+
 });
