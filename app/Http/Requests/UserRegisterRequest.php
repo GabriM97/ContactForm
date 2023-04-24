@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use App\Http\Responses\CustomErrorJsonResponse;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserRegisterRequest extends FormRequest
@@ -46,11 +46,7 @@ class UserRegisterRequest extends FormRequest
         $errors = $validator->errors();
 
         throw new HttpResponseException(
-            response()->json([
-                'errors' => $errors,
-                'code' => Response::HTTP_BAD_REQUEST
-            ]),
-            Response::HTTP_BAD_REQUEST
+            (new CustomErrorJsonResponse($errors->toJson(), Response::HTTP_BAD_REQUEST))->get()
         );
     }
 }
