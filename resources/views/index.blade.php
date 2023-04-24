@@ -10,6 +10,7 @@
 </head>
 
 <body class="p-3">
+    <!-- 
     <h1 class="text-3xl font-bold my-5">Test del candidato</h1>
     <p class="mb-3">Benvenuto/a nel test per la tua candidatura. </p>
     <p class="mb-3">Cosa puoi fare con questo progetto: </p>
@@ -27,7 +28,8 @@
     <p class="mb-3">Puoi anche cimentarti in qualcosa di completamente diverso,
         se lo reputi interessante. Ricorda,
         non è importante la quantità. </p>
-
+    -->
+    
     <div id="app"></div>
 </body>
 
