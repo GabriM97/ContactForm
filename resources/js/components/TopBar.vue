@@ -10,8 +10,12 @@
     const emit = defineEmits(['errorEvent', 'loggedOutEvent'])
 
     const handleLogout = function () {
-        axios.post('/api/user/logout', { validateStatus: status => status < 400 })
+        axios.post('/api/user/logout', {})
             .catch((err) => {
+                if (err.response != undefined) {
+                    emit('errorEvent', err.response.data.error_message);
+                    return;
+                }
                 emit('errorEvent', err.message)
             }).finally((res) => {
                 emit('loggedOutEvent', true)
