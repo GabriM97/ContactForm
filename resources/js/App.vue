@@ -5,7 +5,7 @@
     import RegisterForm from './components/RegisterForm.vue';
     import TopBar from './components/TopBar.vue';
     import axios from 'axios';
-    import { ref, reactive, onMounted } from 'vue';
+    import { ref, reactive, onMounted, watch } from 'vue';
 
     const App = {
         user: reactive({
@@ -36,12 +36,19 @@
             reset: function () {
                 App.accessToken.create('', new Date);
                 delete axios.defaults.headers.common['Authorization'];
+                localStorage.removeItem('accessToken');
             },
 
             create: function (newToken, newExpiryDate) {
                 App.accessToken.token = newToken;
-                App.accessToken.expiryDate = newExpiryDate;
+                App.accessToken.expiryDate = new Date(newExpiryDate);
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + App.accessToken.token
+
+                // storing the token in the localStorage is not safe. It should be stored into Vuex storage instead.
+                localStorage.setItem('accessToken', JSON.stringify({
+                    token: App.accessToken.token,
+                    expiryDate: App.accessToken.expiryDate
+                }));
             },
         }),
         
@@ -53,24 +60,29 @@
         App.accessToken.create(tokenData.token, tokenData.expiryDate);
         App.user.loggedIn = true;
         App.user.populate();
+        showRegisterForm.value = false;
+        App.errorMessage.value = '';
     }
 
     const handleLogout = function (logout) {
         App.user.loggedIn = false;
         App.accessToken.reset();
         App.user.reset();
+        showRegisterForm.value = false;
+        App.errorMessage.value = '';
     }
 
     onMounted(() => {
-        console.log('checking if access token expired');
+        if (localStorage.getItem('accessToken') !== null) {
+            let localAccessToken = JSON.parse(localStorage.getItem('accessToken'));
+            handleLogin(localAccessToken);
 
-        if (App.accessToken.expiryDate <= (new Date)) {
-            App.accessToken.reset();
+            if (App.accessToken.expiryDate <= (new Date)) {
+                handleLogout();
+            }
         }
-
-        // App.errorMessage.value = '';
-        // showRegisterForm.value = false;
     });
+    
 </script>
 
 <template>
@@ -87,12 +99,13 @@
         @showRegisterFormEvent="(show) => showRegisterForm = show"
         @errorEvent="(error) => App.errorMessage.value = error"
     />
-<!-- 
-    <RegisterForm v-if="!App.user.loggedIn && showRegisterForm" 
-        @loggedInEvent="login => App.user.loggedIn = login"
-        @showLoginFormEvent="(hide) => showRegisterForm = hide"
-    />
 
+    <RegisterForm v-if="!App.user.loggedIn && showRegisterForm"
+        @registeredEvent="(tokenData) => handleLogin(tokenData)"
+        @showLoginFormEvent="(hide) => showRegisterForm = hide"
+        @errorEvent="(error) => App.errorMessage.value = error"
+    />
+<!-- 
     <ContactsList v-if="App.user.loggedIn.value" />
 
     <ContactForm v-if="App.user.loggedIn.value" @formSentEvent="contactFormSent" />
