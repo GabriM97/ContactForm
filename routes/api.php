@@ -19,6 +19,7 @@ use App\Http\Responses\CustomJsonResponse;
 
 Route::middleware('auth:api')->prefix('contacts')->group(function () {
     Route::get('/', [ContactController::class, 'list'])->name('contacts.list');
+    Route::get('/{contact}', [ContactController::class, 'get'])->name('contacts.get');
     Route::post('/', [ContactController::class, 'store'])->name('contacts.store');
     Route::delete('/{contact}', [ContactController::class, 'delete'])->name('contacts.delete');
 });
