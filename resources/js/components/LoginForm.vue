@@ -50,36 +50,33 @@
 </script>
 
 <template>
-    <div class="mt-10">
+    <div id="login_form_container" class="p-5 relative" :class="opacityClass">
 
-        <div id="login_form_container" class="flex flex-col p-5 relative" :class="opacityClass">
+        <Spinner v-if="showLoadingSpinner" />
 
-            <Spinner v-if="showLoadingSpinner"/>
+        <h1 class="text-3xl font-bold mb-5">Login</h1>
 
-            <h1 class="text-3xl">Login</h1>
+        <form action="#" id="login_form" class="flex flex-col gap-y-4" @submit.prevent="handleLogin" :disabled="showLoadingSpinner">
+            <!-- Email -->
+            <div class="flex flex-col" id="email_container">
+                <label for="login_form_email" class="font-medium">Email</label>
+                <input type="email" v-model="login.email" id="login_form_email" class="border-gray-300 border-2 rounded-xl" 
+                        :disabled="showLoadingSpinner" required>
+            </div>
 
-            <form action="#" id="login_form" @submit.prevent="handleLogin" :disabled="showLoadingSpinner">
-                <!-- Email -->
-                <div class="flex flex-col my-3" id="email_container">
-                    <label for="login_form_email" class="font-medium">Email</label>
-                    <input type="email" v-model="login.email" id="login_form_email" class="border-gray-300 border-2 rounded-xl" 
-                           :disabled="showLoadingSpinner" required>
-                </div>
+            <!-- Password -->
+            <div class="flex flex-col" id="password_container">
+                <label for="login_form_password" class="font-medium">Password</label>
+                <input type="password" v-model="login.password" id="login_form_password" minlength="8" class="border-gray-300 border-2 rounded-xl" 
+                        :disabled="showLoadingSpinner" required>
+            </div>
 
-                <!-- Password -->
-                <div class="flex flex-col my-3" id="password_container">
-                    <label for="login_form_password" class="font-medium">Password</label>
-                    <input type="password" v-model="login.password" id="login_form_password" minlength="8" class="border-gray-300 border-2 rounded-xl" 
-                           :disabled="showLoadingSpinner" required>
-                </div>
-
-                <!-- Button -->
-                <div class="flex flex-col my-6 justify-center items-center" id="submit_container">
-                    <input type="submit" name="send" id="login_form_submit" value="Login" :disabled="showLoadingSpinner"
-                           class="border-gray-300 border-2 rounded-md py-2 w-1/3 cursor-pointer">
-                    <p class="mt-5">Not registered yet? <span class="underline cursor-pointer py-2" @click="!showLoadingSpinner && emit('showRegisterFormEvent', true)">Register now!</span></p>
-                </div>
-            </form>
-        </div>
+            <!-- Button -->
+            <div class="flex flex-col my-3 justify-center items-center" id="submit_container">
+                <input type="submit" name="send" id="login_form_submit" value="Login" :disabled="showLoadingSpinner"
+                        class="border-gray-300 border-2 rounded-md py-2 w-1/3 cursor-pointer">
+                <p class="mt-5">Not registered yet? <span class="underline cursor-pointer py-2" @click="!showLoadingSpinner && emit('showRegisterFormEvent', true)">Register now!</span></p>
+            </div>
+        </form>
     </div>
 </template>
