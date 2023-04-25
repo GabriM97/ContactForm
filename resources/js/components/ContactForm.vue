@@ -29,10 +29,10 @@
             surname: contact.surname,
             email: contact.email || props.userEmail,
             message: contact.message
-        }).then(res => {
-            emit('contactSentEvent', res.data.data)
+        }).then((res) => {
+            emit('contactSentEvent', res.data.data.id)
             clearFormFields();
-        }).catch(err => {
+        }).catch((err) => {
             if (err.response != undefined) {
                 emit('errorEvent', err.response.data.error_message);
                 return;

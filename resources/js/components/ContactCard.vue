@@ -8,8 +8,10 @@
 </script>
 
 <template>
-    <div>Name: {{ contact.name }}</div>
-    <div>Surname: {{ contact.surname }}</div>
-    <div>Email: {{ contact.email }}</div>
-    <div>Message: {{ contact.message }}</div>
+    <div class="flex flex-col">
+        <div>Name: {{ contact.name }}</div>
+        <div>Surname: {{ contact.surname }}</div>
+        <div>Email: {{ contact.email }}</div>
+        <div>Message: {{ contact.message }}</div>
+    </div>
 </template>

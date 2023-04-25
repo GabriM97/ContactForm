@@ -17,6 +17,10 @@
                 .then(res => {
                     App.user.details = res.data.data;
                 }).catch(err => {
+                    if (err.response != undefined) {
+                        App.errorMessage.value = err.response.data.error_message;
+                        return;
+                    }
                     App.errorMessage.value = err.message;
                 })
             },
@@ -54,9 +58,8 @@
         
     };
 
-    const contactsList = ref([]);
-
     const showRegisterForm = ref(false);
+    const contactToAdd = ref(0);
 
     const handleLogin = function (tokenData) {
         App.accessToken.create(tokenData.token, tokenData.expiryDate);
@@ -83,7 +86,7 @@
                 handleLogout();
             }
         }
-    });    
+    });
 </script>
 
 <template>
@@ -108,10 +111,12 @@
             />
  
             <ContactsList v-if="App.user.loggedIn" 
-                :contacts="contactsList" />
+                @errorEvent="(error) => App.errorMessage.value = error"
+                :newContactId="contactToAdd"
+            />
 
             <ContactForm v-if="App.user.loggedIn" 
-                @contactSentEvent="(newContact) => contactsList.value.push(newContact)" 
+                @contactSentEvent="(newContactId) => contactToAdd = newContactId" 
                 @errorEvent="(error) => App.errorMessage.value = error"
                 :userEmail="App.user.details.email"
             />
