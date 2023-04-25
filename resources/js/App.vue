@@ -54,6 +54,8 @@
         
     };
 
+    const contactsList = ref([]);
+
     const showRegisterForm = ref(false);
 
     const handleLogin = function (tokenData) {
@@ -81,33 +83,38 @@
                 handleLogout();
             }
         }
-    });
-    
+    });    
 </script>
 
 <template>
-    <TopBar 
-        @loggedOutEvent="(logout) => handleLogout(logout)"
-        @errorEvent="(error) => App.errorMessage.value = error"
+    <div class="relative p-1 xl:w-1/4 lg:w-1/3 md:w-2/3 sm:w-3/4 m-auto">
+        <TopBar 
+            @loggedOutEvent="(logout) => handleLogout(logout)"
+            @errorEvent="(error) => App.errorMessage.value = error"
+            :userName="App.user.details.name"
+            :errorMessage="App.errorMessage"
+        />
+        <div class="">
+            <LoginForm v-if="!App.user.loggedIn && !showRegisterForm"
+                @loggedInEvent="(tokenData) => handleLogin(tokenData)"
+                @showRegisterFormEvent="(show) => showRegisterForm = show"
+                @errorEvent="(error) => App.errorMessage.value = error"
+            />
 
-        :userName="App.user.details.name" 
-        :errorMessage="App.errorMessage"
-    />
+            <RegisterForm v-if="!App.user.loggedIn && showRegisterForm"
+                @registeredEvent="(tokenData) => handleLogin(tokenData)"
+                @showLoginFormEvent="(hide) => showRegisterForm = hide"
+                @errorEvent="(error) => App.errorMessage.value = error"
+            />
+ 
+            <ContactsList v-if="App.user.loggedIn" 
+                :contacts="contactsList" />
 
-    <LoginForm v-if="!App.user.loggedIn && !showRegisterForm"
-        @loggedInEvent="(tokenData) => handleLogin(tokenData)"
-        @showRegisterFormEvent="(show) => showRegisterForm = show"
-        @errorEvent="(error) => App.errorMessage.value = error"
-    />
-
-    <RegisterForm v-if="!App.user.loggedIn && showRegisterForm"
-        @registeredEvent="(tokenData) => handleLogin(tokenData)"
-        @showLoginFormEvent="(hide) => showRegisterForm = hide"
-        @errorEvent="(error) => App.errorMessage.value = error"
-    />
-<!-- 
-    <ContactsList v-if="App.user.loggedIn.value" />
-
-    <ContactForm v-if="App.user.loggedIn.value" @formSentEvent="contactFormSent" />
--->
+            <ContactForm v-if="App.user.loggedIn" 
+                @contactSentEvent="(newContact) => contactsList.value.push(newContact)" 
+                @errorEvent="(error) => App.errorMessage.value = error"
+                :userEmail="App.user.details.email"
+            />
+        </div>
+    </div>
 </template>

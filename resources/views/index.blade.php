@@ -9,7 +9,7 @@
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
-<body class="p-3">
+<body>
     <!-- 
     <h1 class="text-3xl font-bold my-5">Test del candidato</h1>
     <p class="mb-3">Benvenuto/a nel test per la tua candidatura. </p>
