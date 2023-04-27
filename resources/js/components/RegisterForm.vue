@@ -79,7 +79,7 @@
 </script>
 
 <template>        
-    <div id="register_form_container" class="p-5 relative" :class="opacityClass">
+    <div id="register_form_container" class="p-5 relative my-5 mx-2 border rounded-md shadow-lg" :class="opacityClass">
         
         <Spinner v-if="showLoadingSpinner"/>
 

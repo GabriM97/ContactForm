@@ -43,13 +43,16 @@
     watch(() => props.newContactId, (id) => getNewContact(id));
 
     onMounted(() => {
-        console.log('mounted getting new contacts');
         getContacts();
     });
 </script>
 
 <template>
-    <!-- loop though all contacts -->
-    <ContactCard v-for="contact in contacts" :key="contact.id" :contact="contact"
-        class="my-4" />
+    <h1 class="text-3xl p-5 my-5 font-bold mb-5">Your contacts</h1>
+
+    <div class="flex flex-nowrap overflow-x-auto gap-x-10 p-5 mb-5">
+        <!-- loop though all contacts -->
+        <ContactCard v-for="contact in contacts" :key="contact.id" :contact="contact"
+            @contactDeleted="(deletedId) => contacts = contacts.filter(contact => contact.id != deletedId)" />
+    </div>
 </template>

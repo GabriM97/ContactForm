@@ -57,7 +57,7 @@
 </script>
 
 <template>
-    <div id="contact_form_container" class="p-5 relative" :class="opacityClass">
+    <div id="contact_form_container" class="p-5 my-5 mx-2 relative border rounded-md transition-all shadow-lg hover:shadow-2xl hover:scale-105" :class="opacityClass">
 
         <Spinner v-if="showLoadingSpinner" />
 
@@ -83,7 +83,7 @@
             <!-- Email -->
             <div class="flex flex-col" id="email_container">
                 <label for="contact_form_email" class="font-medium">Email</label>
-                <input type="email" v-model="contact.email" id="contact_form_email" class="border-gray-300 border-2 rounded-xl" 
+                <input type="email" v-model="contact.email" id="contact_form_email" class="border-gray-300 p-1 border-2 rounded-xl" 
                         :disabled="showLoadingSpinner" :placeholder="props.userEmail">
             </div>
 
@@ -98,10 +98,10 @@
             </div>
 
             <!-- Buttons -->
-            <div class="flex flex-row gap-x-2 sm:gap-x-5 my-3 justify-center items-center" id="submit_container">
-                <input type="submit" name="send" id="contact_form_submit"  class="border-gray-300 border-2 rounded-md px-auto py-2 w-2/3 cursor-pointer" 
+            <div class="flex flex-row gap-x-2 sm:gap-x-5 my-3 justify-center items-center font-bold" id="submit_container">
+                <input type="submit" name="send" id="contact_form_submit"  class="border-gray-300 border-2 rounded-md bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white px-auto py-2 w-2/3 cursor-pointer" 
                         :disabled="showLoadingSpinner" value="Send">
-                <input type="reset" name="cancel" id="contact_form_cancel" class="border-gray-300 border-2 rounded-md px-auto py-2 w-1/3 cursor-pointer bg-violet-400 hover:bg-violet-500 active:bg-violet-600 focus:ring"
+                <input type="reset" name="cancel" id="contact_form_cancel" class="border-gray-300 border-2 rounded-md bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white px-auto py-2 w-1/3 cursor-pointer focus:ring"
                         :disabled="showLoadingSpinner" value="Cancel">
             </div>
         </form>

@@ -55,7 +55,6 @@
                 }));
             },
         }),
-        
     };
 
     const showRegisterForm = ref(false);
@@ -90,14 +89,17 @@
 </script>
 
 <template>
-    <div class="relative p-1 xl:w-1/4 lg:w-1/3 md:w-2/3 sm:w-3/4 m-auto">
-        <TopBar 
-            @loggedOutEvent="(logout) => handleLogout(logout)"
-            @errorEvent="(error) => App.errorMessage.value = error"
-            :userName="App.user.details.name"
-            :errorMessage="App.errorMessage"
-        />
-        <div class="">
+    <div class="relative p-1">
+        <div class="xl:w-1/4 lg:w-1/3 md:w-2/3 sm:w-3/4 m-auto">
+            <TopBar 
+                @loggedOutEvent="(logout) => handleLogout(logout)"
+                @errorEvent="(error) => App.errorMessage.value = error"
+                :userName="App.user.details.name"
+                :errorMessage="App.errorMessage"
+            />
+        </div>
+
+        <div class="xl:w-1/4 lg:w-1/3 md:w-2/3 sm:w-3/4 m-auto">
             <LoginForm v-if="!App.user.loggedIn && !showRegisterForm"
                 @loggedInEvent="(tokenData) => handleLogin(tokenData)"
                 @showRegisterFormEvent="(show) => showRegisterForm = show"
@@ -109,12 +111,16 @@
                 @showLoginFormEvent="(hide) => showRegisterForm = hide"
                 @errorEvent="(error) => App.errorMessage.value = error"
             />
- 
+        </div>
+
+        <div class="m-auto p-0">
             <ContactsList v-if="App.user.loggedIn" 
                 @errorEvent="(error) => App.errorMessage.value = error"
                 :newContactId="contactToAdd"
             />
+        </div>
 
+        <div class="xl:w-1/4 lg:w-1/3 md:w-2/3 sm:w-3/4 m-auto before:border-t-4">
             <ContactForm v-if="App.user.loggedIn" 
                 @contactSentEvent="(newContactId) => contactToAdd = newContactId" 
                 @errorEvent="(error) => App.errorMessage.value = error"

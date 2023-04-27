@@ -50,7 +50,7 @@
 </script>
 
 <template>
-    <div id="login_form_container" class="p-5 relative" :class="opacityClass">
+    <div id="login_form_container" class="p-5 my-5 mx-2 relative border rounded-md shadow-lg" :class="opacityClass">
 
         <Spinner v-if="showLoadingSpinner" />
 

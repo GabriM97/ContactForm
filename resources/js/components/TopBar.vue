@@ -31,10 +31,12 @@
 
             <!-- Logout button -->
             <input type="button" name="logout" id="logout" value="Logout" @click="handleLogout"
-                class="border-gray-300 border-2 rounded-md px-2 py-1 cursor-pointer">
+                class="border-gray-300 bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white font-medium border-2 rounded-md px-2 py-1 cursor-pointer">
         </div>
-        <div v-if="props.errorMessage.value != ''" class="grow p-1 bg-red-300 text-gray-900 rounded-md" 
-            :class="userName === undefined ? 'absolute bottom-0 right-5 left-5' : ''">
+        
+        <!-- Error messages -->
+        <div v-if="props.errorMessage.value != ''" class="grow p-1 bg-red-300 text-gray-900 rounded-md"
+            :class="userName === undefined ? 'absolute -bottom-3 right-5 left-5' : ''">
             {{ errorMessage.value }}
         </div>
     </nav>
