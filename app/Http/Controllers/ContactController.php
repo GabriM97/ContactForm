@@ -19,7 +19,11 @@ class ContactController extends Controller
      */
     public function list()
     {
-        return (new CustomJsonResponse(Auth::user()->contacts()))->get();
+        $sortBy = [
+            ['bookmark', 'desc'],
+            ['created_at', 'desc'],
+        ];
+        return (new CustomJsonResponse(Auth::user()->contacts()->sortBy($sortBy)->values()))->get();
     }
 
     /**
@@ -81,5 +85,51 @@ class ContactController extends Controller
         $contact->delete();
 
         return (new CustomJsonResponse(['id' => $deletedId]))->get();
+    }
+
+    /**
+     * Bookmark the specified resource and unbookmark all previous ones.
+     *
+     * @param  \App\Models\Contact  $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function bookmark(Contact $contact)
+    {
+        $contact = Auth::user()->contacts()->where('id', $contact->id)->pop();
+
+        if ($contact->count() === 0) {
+            $code = Response::HTTP_NOT_FOUND;
+
+            return (new CustomErrorJsonResponse(Response::$statusTexts[$code], $code))->get();
+        }
+
+        Contact::where('user_id', Auth::user()->id)->update(['bookmark' => false]);
+
+        $contact->bookmark = !$contact->bookmark;
+        $contact->save();
+
+        return (new CustomJsonResponse(['id' => $contact->id]))->get();
+    }
+
+    /**
+     * Star or unstar the specified resource.
+     *
+     * @param  \App\Models\Contact  $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function star(Contact $contact)
+    {
+        $contact = Auth::user()->contacts()->where('id', $contact->id)->pop();
+
+        if ($contact->count() === 0) {
+            $code = Response::HTTP_NOT_FOUND;
+
+            return (new CustomErrorJsonResponse(Response::$statusTexts[$code], $code))->get();
+        }
+
+        $contact->star = !$contact->star;
+        $contact->save();
+
+        return (new CustomJsonResponse(['id' => $contact->id]))->get();
     }
 }

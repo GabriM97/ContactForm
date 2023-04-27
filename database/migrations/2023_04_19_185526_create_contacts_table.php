@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('surname');
             $table->string('email');
             $table->string('message', 1000);
+            $table->boolean('star')->default(false);
+            $table->boolean('bookmark')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

@@ -22,6 +22,8 @@ Route::middleware('auth:api')->prefix('contacts')->group(function () {
     Route::get('/{contact}', [ContactController::class, 'get'])->name('contacts.get');
     Route::post('/', [ContactController::class, 'store'])->name('contacts.store');
     Route::delete('/{contact}', [ContactController::class, 'delete'])->name('contacts.delete');
+    Route::post('/{contact}/bookmark', [ContactController::class, 'bookmark'])->name('contacts.bookmark');
+    Route::post('/{contact}/star', [ContactController::class, 'star'])->name('contacts.star');
 });
 
 Route::prefix('user')->group(function () {
