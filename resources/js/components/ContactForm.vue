@@ -3,7 +3,7 @@
     import { ref, reactive, onMounted } from 'vue';
     import Spinner from './Spinner.vue';
     
-    const emit = defineEmits('contactSentEvent', 'errorEvent');
+    const emit = defineEmits(['contactSentEvent', 'errorEvent']);
 
     const props = defineProps({
         userEmail: String
@@ -32,6 +32,7 @@
         }).then((res) => {
             emit('contactSentEvent', res.data.data.id)
             clearFormFields();
+            emit('errorEvent', ''); // clear old error messages
         }).catch((err) => {
             if (err.response != undefined) {
                 emit('errorEvent', err.response.data.error_message);

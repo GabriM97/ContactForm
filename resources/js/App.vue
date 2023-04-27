@@ -90,7 +90,7 @@
 
 <template>
     <div class="relative p-1">
-        <div class="xl:w-1/4 lg:w-1/3 md:w-2/3 sm:w-3/4 m-auto">
+        <div class="">
             <TopBar 
                 @loggedOutEvent="(logout) => handleLogout(logout)"
                 @errorEvent="(error) => App.errorMessage.value = error"
@@ -113,7 +113,7 @@
             />
         </div>
 
-        <div class="m-auto p-0">
+        <div class="m-auto p-0 relative">
             <ContactsList v-if="App.user.loggedIn" 
                 @errorEvent="(error) => App.errorMessage.value = error"
                 :newContactId="contactToAdd"

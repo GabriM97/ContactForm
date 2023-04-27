@@ -79,7 +79,7 @@
 </script>
 
 <template>        
-    <div id="register_form_container" class="p-5 relative my-5 mx-2 border rounded-md shadow-lg" :class="opacityClass">
+    <div id="register_form_container" class="p-5 relative my-5 mx-4 sm:mx-0 border rounded-md shadow-lg" :class="opacityClass">
         
         <Spinner v-if="showLoadingSpinner"/>
 
@@ -117,7 +117,7 @@
             <!-- Button -->
             <div class="flex flex-col my-3 justify-center items-center" id="submit_container">
                 <input type="submit" name="send" id="register_form_submit" value="Register" :disabled="disableRegister || showLoadingSpinner" 
-                        class="border-gray-300 border-2 rounded-md py-2 w-1/3 cursor-pointer disabled:opacity-30">
+                        class="border-gray-300 text-white font-medium bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 border-2 rounded-md py-2 w-1/3 cursor-pointer disabled:opacity-30">
                 <p class="mt-5">Already registered? <span class="underline cursor-pointer py-2" @click="!showLoadingSpinner && emit('showLoginFormEvent', false)">Login now!</span></p>
             </div>
         </form>

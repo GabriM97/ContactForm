@@ -50,7 +50,7 @@
 </script>
 
 <template>
-    <div id="login_form_container" class="p-5 my-5 mx-2 relative border rounded-md shadow-lg" :class="opacityClass">
+    <div id="login_form_container" class="p-5 my-5 mx-4 sm:mx-0 relative border rounded-md shadow-lg" :class="opacityClass">
 
         <Spinner v-if="showLoadingSpinner" />
 
@@ -74,7 +74,7 @@
             <!-- Button -->
             <div class="flex flex-col my-3 justify-center items-center" id="submit_container">
                 <input type="submit" name="send" id="login_form_submit" value="Login" :disabled="showLoadingSpinner"
-                        class="border-gray-300 border-2 rounded-md py-2 w-1/3 cursor-pointer">
+                        class="border-gray-300 text-white font-medium bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 border-2 rounded-md py-2 w-1/3 cursor-pointer">
                 <p class="mt-5">Not registered yet? <span class="underline cursor-pointer py-2" @click="!showLoadingSpinner && emit('showRegisterFormEvent', true)">Register now!</span></p>
             </div>
         </form>

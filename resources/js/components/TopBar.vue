@@ -35,8 +35,8 @@
         </div>
         
         <!-- Error messages -->
-        <div v-if="props.errorMessage.value != ''" class="grow p-1 bg-red-300 text-gray-900 rounded-md"
-            :class="userName === undefined ? 'absolute -bottom-3 right-5 left-5' : ''">
+        <div v-if="props.errorMessage.value != ''" class="grow p-1 bg-red-300 text-gray-700 rounded-md"
+            :class="userName === undefined ? 'absolute font-medium -bottom-4 right-5 left-5 xl:w-1/4 lg:w-1/3 md:w-2/3 sm:w-3/4 m-auto' : ''">
             {{ errorMessage.value }}
         </div>
     </nav>

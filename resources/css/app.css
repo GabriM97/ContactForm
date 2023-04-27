@@ -5,3 +5,19 @@
 input[type="text"], input[type="email"], textarea {
     padding-left: 0.25rem;
 }
+
+.contacts-move
+.contacts-enter-active,
+.contacts-leave-active {
+  transition: all 0.5s ease;
+}
+
+.contacts-enter-from,
+.contacts-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01);
+}
+
+.contacts-leave-active {
+  position: absolute;
+}
